@@ -29,10 +29,10 @@ FLOW_PIN  = 17
 PIR_PIN   = 27
 GAS_PIN   = 22
 DHT_PIN   = board.D4
-LIGHT_PIN = 23  # This controls the LED
+LIGHT_PIN = 18  # This controls the LED
 MOTION_TIMEOUT = 5
 DHT_INTERVAL = 10
-MQ_INTERVAL = 10
+MQ_INTERVAL = 2
 CALIB_FACTOR = 7.5
 
 IMAGE_FOLDER = os.path.join(os.path.dirname(__file__), "captured_images")
@@ -164,7 +164,7 @@ def main_loop():
 
                 # MQ135 every interval
                 if now - last_mq_read >= MQ_INTERVAL:
-                    readings['air_quality'] = int(gas_sensor.value)
+                    readings['air_quality'] = int(not gas_sensor.value)
                     last_mq_read = now
 
                 # Motion detection
