@@ -1,2 +1,2 @@
 # SmartNest
-Smart home automation project using raspberrypi
+Smart home automation project using raspberrypi 4
