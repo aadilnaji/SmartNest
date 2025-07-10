@@ -55,12 +55,19 @@ if __name__ == "__main__":
             mqtt.publish_telemetry({"air_quality": aq})
             last_mq = now
 
-        motion_active = pir.check_motion()
+        motion1 = pir.check_motion_1()
+        motion2 = pir.check_motion_2()
 
-        if mqtt.light_state or motion_active:
-            led.on()
+        if mqtt.light_state or motion1:
+            led.set_led1(True)
         else:
-            led.off()
+            led.set_led1(False)
+            
+        mqtt.publish_telemetry({
+        "motion_1": motion1,
+        "motion_2": motion2,
+        "light_1": led.is_led1_on(),
+        "light_2": led.is_led2_on()
+        } )
 
-        mqtt.publish_telemetry({"motion": motion_active, "light": led.is_on()})
         time.sleep(0.5)

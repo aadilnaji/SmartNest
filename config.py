@@ -20,6 +20,9 @@ GAS_PIN       = 22
 DHT_PIN       = 4
 LED_PIN       = 18
 SERVO_PIN     = 23
+PIR2_PIN      = 24
+LED2_PIN      = 15
+
 
 MOTION_TO     = 5
 CALIB_FACTOR  = 7.5
