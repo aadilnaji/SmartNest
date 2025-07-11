@@ -1,0 +1,51 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables
+.env
+
+# Logs and debug
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE files
+.vscode/
+.idea/
+
+# Pi camera temporary files (if used)
+*.h264
+*.jpg
+*.jpeg
+*.png
+
+# MQTT or sensor data logs (if logged)
+*.csv
+*.db
+
+# Unit test cache
+.pytest_cache/
+.cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Compiled C files
+*.o
+*.out
+
+# Systemd / service files (optional if private)
+*.service
+
+# Backup files
+*~
+*.bak
+*.swp
