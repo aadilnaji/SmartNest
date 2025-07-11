@@ -1,6 +1,6 @@
 from gpiozero import AngularServo
 from time import sleep
-from config import SERVO_PIN, SERVO2_PIN
+from config import SERVO_PIN
 
 # Door servo
 door_servo = AngularServo(SERVO_PIN,
@@ -8,6 +8,7 @@ door_servo = AngularServo(SERVO_PIN,
                            min_pulse_width=0.5/1000,
                            max_pulse_width=2.5/1000)
 # Window servo (use next available pin, e.g. SERVO_WINDOW_PIN in config)
+from config import SERVO_WINDOW_PIN
 window_servo = AngularServo(SERVO_WINDOW_PIN,
                              min_angle=0, max_angle=180,
                              min_pulse_width=0.5/1000,
@@ -42,3 +43,5 @@ def close_window():
     window_servo.angle = 0
     sleep(2)
     window_servo.detach()
+
+
