@@ -16,13 +16,28 @@ EMAIL_TO   = os.getenv("EMAIL_TO")
 # Pins & Timing
 FLOW_PIN      = 17
 PIR_PIN       = 27
+PIR2_PIN      = 24
 GAS_PIN       = 22
 DHT_PIN       = 4
 LED_PIN       = 18
-SERVO_PIN     = 23
-PIR2_PIN      = 24
 LED2_PIN      = 15
+LED3_PIN      = 0
+LED4_PIN      = 2
+SERVO_PIN     = 23
 
+FAN_PIN = 14              # GPIO pin for relay
+FAN_TEMP_THRESHOLD = 30   # Temp threshold
+FAN_HOLD_TIME = 10  # seconds the fan should stay on after detection
+
+# RFID PINS
+#
+# VCC 3.3v
+# GND 
+# SDA  GPIO8
+# SCK  GPIO11
+# MOSI GPIO10
+# MISO GPIO9
+# RSR  GPIO25
 
 MOTION_TO     = 5
 CALIB_FACTOR  = 7.5
