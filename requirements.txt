@@ -1,0 +1,10 @@
+gpiozero
+python-dotenv
+RPi.GPIO
+lgpio
+adafruit-circuitpython-dht
+mfrc522
+paho-mqtt
+yagmail
+# picamera2 is not on PyPI. Install it with:
+# sudo apt install python3-picamera2

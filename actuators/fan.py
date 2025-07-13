@@ -22,7 +22,3 @@ def set_manual(state: bool):
 def clear_manual():
     off()
 
-def trigger_auto():
-    global manual_override
-    if not manual_override:
-        on()

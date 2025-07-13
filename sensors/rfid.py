@@ -5,7 +5,7 @@ import threading
 from mqtt_client import publish_telemetry
 
 reader = SimpleMFRC522()
-AUTHORIZED_UIDS = ['1091744629187', 'ABCDEF1234'] 
+AUTHORIZED_UIDS = ['1091744629187', 'ADD_YOUR_UIDS_HERE']  
 
 LOCK_DELAY = 6  # seconds
 

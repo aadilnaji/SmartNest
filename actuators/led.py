@@ -1,10 +1,11 @@
-from gpiozero import PWMLED
-from config import LED_PIN, LED2_PIN, LED3_PIN, LED4_PIN
+from gpiozero import PWMLED,LED
+from config import LED_PIN, LED2_PIN, LED3_PIN, LED4_PIN, ALERT_LED_PIN
 
 led1 = PWMLED(LED_PIN)
 led2 = PWMLED(LED2_PIN)
 led3 = PWMLED(LED3_PIN)
 led4 = PWMLED(LED4_PIN)
+alert_led = LED(ALERT_LED_PIN)
 
 # Set LEDs to 30% brightness
 led1.value = 0.3
@@ -34,3 +35,12 @@ def is_led3_on():
 
 def is_led4_on():
     return led4.is_lit
+    
+def set_alert_led(state: bool):
+    if state:
+        alert_led.on()
+    else:
+        alert_led.off()
+
+def is_alert_led_on():
+    return alert_led.value == 1
