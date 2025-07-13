@@ -24,6 +24,7 @@ LED2_PIN      = 15
 LED3_PIN      = 0
 LED4_PIN      = 2
 SERVO_PIN     = 23
+SERVO_WINDOW_PIN = 3
 
 FAN_PIN = 14              # GPIO pin for relay
 FAN_TEMP_THRESHOLD = 30   # Temp threshold

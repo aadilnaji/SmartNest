@@ -2,25 +2,55 @@ import time
 import threading
 import signal
 import sys
+
 from sensors import flow, pir, gas, dht, rfid
 import actuators.led as led
-from actuators.servo import init_servo
+from actuators.servo import init_servo, open_window
+from actuators import fan
 import camera as alert
 import mqtt_client as mqtt
 import actuators.fan as fan
 import config
 
+# Thread class for time-based sensor polling
+class SensorWorker(threading.Thread):
+    def __init__(self, name, interval_sec, function, key):
+        super().__init__(daemon=True)
+        self.name = name
+        self.interval = interval_sec
+        self.function = function
+        self.key = key
+        self._stop = threading.Event()
 
+    def run(self):
+        print(f"[THREAD] {self.name} started with interval {self.interval}s")
+        while not self._stop.is_set():
+            try:
+                value = self.function()
+                if value is not None:
+                    if isinstance(value, tuple):
+                        payload = dict(zip(self.key, value))
+                    else:
+                        payload = {self.key: value}
+                    mqtt.publish_telemetry(payload)
+            except Exception as e:
+                print(f"[ERROR] {self.name}: {e}")
+            time.sleep(self.interval)
+
+    def stop(self):
+        self._stop.set()
+
+# PIR motion event worker
 def motion_worker():
+    print("[THREAD] Motion detection image worker started.")
     while True:
         pir.motion_queue.get()
-        img = alert.capture_image()
-        alert.send_alert_email(img)
-        mqtt.publish_telemetry({"event": "image_captured"})
-        mqtt.publish_telemetry({"event": "email_sent"})
+        img_path = alert.capture_image()
+        alert.send_alert_email(img_path)
+        mqtt.publish_telemetry({"event": "image_captured", "event": "email_sent"})
         pir.motion_queue.task_done()
 
-
+# Handle graceful exit
 def exit_gracefully(signum, frame):
     print("\n[EXIT] Cleaning up...")
     dht.cleanup()
@@ -28,82 +58,86 @@ def exit_gracefully(signum, frame):
     mqtt.stop()
     sys.exit(0)
 
-
 signal.signal(signal.SIGINT, exit_gracefully)
 
-
+# Main Program
 if __name__ == "__main__":
-    print("Starting system...")
+    print("[START] SmartHome system initializing...")
+
     mqtt.start()
     init_servo()
-    threading.Thread(target=motion_worker, daemon=True).start()  # PIR motion image handler
-    threading.Thread(target=rfid.rfid_loop, daemon=True).start()  # RFID reader loop
 
-    last_dht = last_mq = last_flow = last_fan_trigger = time.time()
-    last_temp = last_hum = None
-    last_aq = 0
+    print("[INIT] MQTT, Fan, Servo initialized.")
+
+    threading.Thread(target=motion_worker, daemon=True).start()
+    threading.Thread(target=rfid.rfid_loop, daemon=True).start()
+    print("[THREAD] RFID reader started.")
+
+    # Sensor polling threads
+    SensorWorker(name="FlowWorker", interval_sec=1.0, function=flow.get_flow_rate, key="flow_rate").start()
+    SensorWorker(name="GasWorker", interval_sec=2.0, function=gas.read, key="air_quality").start()
+    SensorWorker(name="DHTWorker", interval_sec=15.0, function=dht.read, key=["temperature", "humidity"]).start()
+    print("[THREAD] Sensor workers started.")
+
+    last_fan_trigger = time.time()
 
 
+    print("[MAIN LOOP] Entering main loop. Press Ctrl+C to exit.")
     while True:
-        now = time.time()
+        try:
+            motion1 = pir.check_motion_1()
+            motion2 = pir.check_motion_2()
 
-        # --- Sensor Reads ---
-        if now - last_flow >= 1:
-            mqtt.publish_telemetry({"flow_rate": flow.get_flow_rate()})
-            last_flow = now
+            led.set_led1(motion1 or mqtt.light_state)
+            led.set_led2(motion1 or motion2 or mqtt.light_state2)
+            led.set_led3(mqtt.light_state3)
+            led.set_led4(mqtt.light_state4)
 
-        if now - last_dht >= 15:
-            t, h = dht.read()
-            last_temp = t
-            last_hum = h
-            mqtt.publish_telemetry({"temperature": t, "humidity": h})
-            t, h = last_temp, last_hum
-        else:
-            t, h = None, None
+            mqtt.publish_telemetry({
+                "motion_1": motion1,
+                "motion_2": motion2,
+                "led_1": led.is_led1_on(),
+                "led_2": led.is_led2_on()
+            })
 
-        if now - last_mq >= 2:
-            aq = gas.read()
-            last_aq = aq
-            mqtt.publish_telemetry({"air_quality": aq})
-            last_mq = last_aq
-        else:
-            aq = 0
+            # Read sensor values
+            temp = mqtt.latest_temperature
+            air_quality = mqtt.latest_air_quality
 
-        # --- Motion Detection ---
-        motion1 = pir.check_motion_1()
-        motion2 = pir.check_motion_2()
+            # Check override status
+            manual_override = mqtt.fan_manual_override
+            manual_state = mqtt.fan_manual_state
 
-        # --- LED Logic ---
-        led.set_led1(motion1 or mqtt.light_state)
-        led.set_led2(motion1 or motion2 or mqtt.light_state2)
-        led.set_led3(mqtt.light_state3)
-        led.set_led4(mqtt.light_state4)
+            # Check auto trigger condition
+            auto_trigger = (air_quality == 1) or (temp is not None and temp >= config.FAN_TEMP_THRESHOLD)
+            if auto_trigger:
+                last_fan_trigger = time.time()
+                print("[AUTO] Fan/Window trigger activated.")
 
-        mqtt.publish_telemetry({
-            "motion_1": motion1,
-            "motion_2": motion2,
-            "light_1": led.is_led1_on(),
-            "light_2": led.is_led2_on()
-        })
+            # Fan logic
+            if manual_override:
+                if manual_state:
+                    fan.on()
+                    open_window()
+                else:
+                    fan.off()
+            else:
+                if time.time() - last_fan_trigger <= config.FAN_HOLD_TIME:
+                    fan.on()
+                else:
+                    fan.off()
 
-        # --- Fan Control Logic ---
-        auto_fan_on = (aq == 1) or (t is not None and t >= config.FAN_TEMP_THRESHOLD)
-        if auto_fan_on:
-            last_fan_trigger = now
+            mqtt.publish_telemetry({
+                "fan_state": fan.is_on(),
+                "fan_auto": not manual_override and (time.time() - last_fan_trigger <= config.FAN_HOLD_TIME),
+                "fan_manual_override": manual_override,
+                "fan_manual_state": manual_state
+            })
 
-        manual_fan_override = getattr(mqtt, "fan_manual_override", False)
-        manual_fan_state = getattr(mqtt, "fan_manual_state", False)
+            time.sleep(0.5)
 
-        if manual_fan_override:
-            fan.on() if manual_fan_state else fan.off()
-        else:
-            fan.on() if now - last_fan_trigger <= config.FAN_HOLD_TIME else fan.off()
+        except Exception as e:
+            print(f"[ERROR] Exception in main loop: {e}")
+            exit_gracefully(None, None)
 
-        mqtt.publish_telemetry({
-            "fan_state": fan.is_on(),
-            "fan_auto": not manual_fan_override and (now - last_fan_trigger <= config.FAN_HOLD_TIME),
-            "fan_manual_override": manual_fan_override,
-            "fan_manual_state": manual_fan_state
-        })
 
-        time.sleep(0.5)

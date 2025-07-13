@@ -1,9 +1,12 @@
 import adafruit_dht
 import board
+import time
 from config import DHT_PIN
 
 dht_sensor = adafruit_dht.DHT11(board.D4)
 
+# Wait for sensor to stabilize
+time.sleep(2)
 
 def read():
     try:
@@ -11,6 +14,8 @@ def read():
     except RuntimeError:
         return None, None
 
-
 def cleanup():
-    dht_sensor.exit()
+    try:
+        dht_sensor.exit()
+    except Exception:
+        pass
