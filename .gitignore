@@ -24,10 +24,7 @@ Thumbs.db
 .idea/
 
 # Pi camera temporary files (if used)
-*.h264
-*.jpg
-*.jpeg
-*.png
+captured_images/
 
 # MQTT or sensor data logs (if logged)
 *.csv
