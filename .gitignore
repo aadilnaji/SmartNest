@@ -28,6 +28,7 @@ Thumbs.db
 *.jpg
 *.jpeg
 *.png
+capture_images/
 
 # MQTT or sensor data logs (if logged)
 *.csv

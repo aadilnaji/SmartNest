@@ -38,7 +38,7 @@ def close_door():
 def open_window():
     global window_open
     if not window_open:
-        window_servo.angle = 180
+        window_servo.angle = 0
         sleep(2)
         window_servo.detach()
         window_open = True
@@ -46,7 +46,8 @@ def open_window():
 def close_window():
     global window_open
     if window_open:
-        window_servo.angle = 0
+        window_servo.angle = 90
+        print("close window")
         sleep(2)
         window_servo.detach()
         window_open = False

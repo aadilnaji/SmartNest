@@ -10,6 +10,7 @@ pir2_sensor = DigitalInputDevice(PIR2_PIN)
 motion_queue = Queue()
 last_motion_time = 0
 last_motion_time_2 = 0
+    
 
 def check_motion_1():
     global last_motion_time
