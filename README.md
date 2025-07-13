@@ -161,6 +161,11 @@ picamera2 # If not installed already, use sudo apt install -y python3-picamera2
 
 ## 📷 Screenshots
 
+![SmartNest Camera](Gallery/SmartHome_Dashboard2.jpg)
+<p align="center">
+  <img src="Gallery/SmartNest_Dashboard1.jpg" alt="Dashboard" width="45%" style="margin-right: 10px;" />
+  <img src="Gallery/SmartNest_Camera.jpg" alt="Camera" width="45%" />
+</p>
 
 
 ---
