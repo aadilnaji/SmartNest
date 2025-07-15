@@ -129,7 +129,7 @@ THINGSBOARD_TOKEN=your_device_token
 ##  Running the System
 
 ```bash
-python main.py
+python SmartNest.py
 ```
 
 This starts:
