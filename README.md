@@ -18,7 +18,7 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 
 ---
 
-## 🔧 Hardware Requirements
+##  Hardware Requirements
 
 * Raspberry Pi 4 or newer
 * **DHT11/DHT22** sensor
@@ -33,7 +33,7 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 
 ---
 
-## 📟 Raspberry Pi GPIO Pinout
+##  Raspberry Pi GPIO Pinout
 
 | Function            | Variable Name       | GPIO Pin |
 |---------------------|---------------------|----------|
@@ -42,11 +42,11 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 | Water Flow Sensor   | `FLOW_PIN`          | 17       |
 | Gas Sensor (MQ-135) | `GAS_PIN`           | 22       |
 | DHT Sensor          | `DHT_PIN`           | 4        |
-| Status LED 1        | `LED_PIN`           | 18       |
-| Status LED 2        | `LED2_PIN`          | 15       |
-| Status LED 3        | `LED3_PIN`          | 0        |
-| Status LED 4        | `LED4_PIN`          | 2        |
-| Alert LED           | `ALERT_LED_PIN`     | 26       |
+| LED 1               | `LED_PIN`           | 18       |
+| LED 2               | `LED2_PIN`          | 15       |
+| LED 3 (optional)    | `LED3_PIN`          | 0        |
+| LED 4 (optional)    | `LED4_PIN`          | 2        |
+| Flow LED (optional) | `ALERT_LED_PIN`     | 26       |
 | Door Servo          | `SERVO_PIN`         | 23       |
 | Window Servo        | `SERVO_WINDOW_PIN`  | 3        |
 | Fan Relay           | `FAN_PIN`           | 14       |
@@ -62,7 +62,7 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 SmartNest/
@@ -85,7 +85,7 @@ SmartNest/
 ```
 ---
 
-## 🎓 Software Setup
+##  Software Setup
 
 ### 1. Clone the repository
 
@@ -126,7 +126,7 @@ THINGSBOARD_TOKEN=your_device_token
 
 ---
 
-## 🛠️ Running the System
+##  Running the System
 
 ```bash
 python main.py
@@ -141,7 +141,7 @@ This starts:
 
 ---
 
-## 📈 MQTT Integration (ThingsBoard)
+##  MQTT Integration (ThingsBoard)
 
 ### Telemetry Topic:
 
@@ -187,7 +187,7 @@ picamera2 # If not installed already, use sudo apt install -y python3-picamera2
 
 ---
 
-## 📷 Screenshots
+##  Screenshots
 
 ![SmartNest Camera](Gallery/SmartHome_Dashboard2.jpg)
 <p align="center">
@@ -198,13 +198,13 @@ picamera2 # If not installed already, use sudo apt install -y python3-picamera2
 
 ---
 
-## 📄 License
+##  License
 
 MIT License. Feel free to fork, use, and improve.
 
 ---
 
-## 🙌 Contributing
+##  Contributing
 
 PRs, bug reports, and feature suggestions are welcome!
 
