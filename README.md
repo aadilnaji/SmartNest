@@ -6,15 +6,15 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 
 ##  Features
 
-* 📷 Motion-triggered image capture using Picamera2
-* ✉️ Email alerts with attached images via Yagmail
-* 🌡️ Temperature & humidity monitoring (DHT)
-* 🌫️ Gas sensor-based air quality detection
-* 🚰 Flow rate monitoring (YF-S201)
-* 📢 MQTT integration with ThingsBoard
-* 🔑 RFID tag-based access control
-* 🌬️ Auto/manual control of fan and window
-* 📊 Telemetry and real-time control via ThingsBoard RPC
+*  Motion-triggered image capture using Picamera2
+*  Email alerts with attached images via Yagmail
+*  Temperature & humidity monitoring (DHT)
+*  Gas sensor-based air quality detection
+*  Flow rate monitoring (YF-S201)
+*  MQTT integration with ThingsBoard
+*  RFID tag-based access control
+*  Auto/manual control of fan and window
+*  Telemetry and real-time control via ThingsBoard RPC
 
 ---
 
