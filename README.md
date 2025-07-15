@@ -4,7 +4,7 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 
 ---
 
-## 🚀 Features
+##  Features
 
 * 📷 Motion-triggered image capture using Picamera2
 * ✉️ Email alerts with attached images via Yagmail
@@ -33,6 +33,35 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 
 ---
 
+## 📟 Raspberry Pi GPIO Pinout
+
+| Function            | Variable Name       | GPIO Pin |
+|---------------------|---------------------|----------|
+| PIR Sensor 1        | `PIR_PIN`           | 27       |
+| PIR Sensor 2        | `PIR2_PIN`          | 24       |
+| Water Flow Sensor   | `FLOW_PIN`          | 17       |
+| Gas Sensor (MQ-135) | `GAS_PIN`           | 22       |
+| DHT Sensor          | `DHT_PIN`           | 4        |
+| Status LED 1        | `LED_PIN`           | 18       |
+| Status LED 2        | `LED2_PIN`          | 15       |
+| Status LED 3        | `LED3_PIN`          | 0        |
+| Status LED 4        | `LED4_PIN`          | 2        |
+| Alert LED           | `ALERT_LED_PIN`     | 26       |
+| Door Servo          | `SERVO_PIN`         | 23       |
+| Window Servo        | `SERVO_WINDOW_PIN`  | 3        |
+| Fan Relay           | `FAN_PIN`           | 14       |
+
+---
+
+---
+
+##  Schematic Diagram
+
+![SmartNest Camera](Gallery/schematic1.png)
+![SmartNest Camera](Gallery/schematic2.png)
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -54,27 +83,6 @@ SmartNest/
 ├── requirements.txt
 └── README.md
 ```
-
----
-
-## 📟 Raspberry Pi GPIO Pinout
-
-| Function            | Variable Name       | GPIO Pin |
-|---------------------|---------------------|----------|
-| PIR Sensor 1        | `PIR_PIN`           | 27       |
-| PIR Sensor 2        | `PIR2_PIN`          | 24       |
-| Water Flow Sensor   | `FLOW_PIN`          | 17       |
-| Gas Sensor (MQ-135) | `GAS_PIN`           | 22       |
-| DHT Sensor          | `DHT_PIN`           | 4        |
-| Status LED 1        | `LED_PIN`           | 18       |
-| Status LED 2        | `LED2_PIN`          | 15       |
-| Status LED 3        | `LED3_PIN`          | 0        |
-| Status LED 4        | `LED4_PIN`          | 2        |
-| Alert LED           | `ALERT_LED_PIN`     | 26       |
-| Door Servo          | `SERVO_PIN`         | 23       |
-| Window Servo        | `SERVO_WINDOW_PIN`  | 3        |
-| Fan Relay           | `FAN_PIN`           | 14       |
-
 ---
 
 ## 🎓 Software Setup
