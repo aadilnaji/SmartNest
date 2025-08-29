@@ -66,7 +66,7 @@ SmartNest is a Raspberry Pi-based smart home system that automates environmental
 
 ```
 SmartNest/
-├── main.py                   
+├── SmartNest.py                   
 ├── config.py                  
 ├── mqtt_client.py            
 ├── camera.py                
